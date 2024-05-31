@@ -6,12 +6,12 @@ services:
       dockerfile: ./Dockerfile
       args:
         LLM_MODEL: phi3
-    image: ollama-s6:phi3_v5
+    image: ollama-s6-base
   
   private-gpt:
     build:
       context: ./private-gpt
       dockerfile: ./Dockerfile
-    image: private-gpt:phi3_v5
+    image: private-gpt-base
   
   

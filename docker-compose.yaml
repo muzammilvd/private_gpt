@@ -1,6 +1,6 @@
 services:
   private-gpt:
-    image: private-gpt:phi3_v5
+    image: private-gpt-base
     ports:
       - 8001:8080
     networks:
@@ -12,20 +12,28 @@ services:
       PGPT_PROFILES: ollama
       PGPT_MODE: ollama
       LLM_MODEL: phi3
+      POSTGRES_DB: private
+      POSTGRES_PASSWORD: venD67564tery
+      POSTGRES_USER: postgres
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      
   ollama:
-    image: ollama-s6:phi3_v5
+    image: ollama-s6-base
     environment:
       - LLM_MODEL=phi3
+      - LLM_EMBED=phi3
     volumes:
       - "ollama-data:/root/.ollama"
     networks:
       - hr-bot-network
-
+      
   postgres:
     image: pgvector/pgvector:pg16
     environment:
       POSTGRES_DB: private
-      POSTGRES_PASSWORD: 12345
+      POSTGRES_PASSWORD: venD67564tery
+      POSTGRES_USER: postgres
     volumes:
       - postgres-data:/var/lib/postgresql/data
     networks:
