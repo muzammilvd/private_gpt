@@ -1,0 +1,41 @@
+services:
+  private-gpt:
+    image: private-gpt:phi3_v5
+    ports:
+      - 8001:8080
+    networks:
+      - hr-bot-network
+    volumes:
+      - private_gpt-data:/home/worker/app/local_data
+    environment:
+      PORT: 8080
+      PGPT_PROFILES: ollama
+      PGPT_MODE: ollama
+      LLM_MODEL: phi3
+  ollama:
+    image: ollama-s6:phi3_v5
+    environment:
+      - LLM_MODEL=phi3
+    volumes:
+      - "ollama-data:/root/.ollama"
+    networks:
+      - hr-bot-network
+
+  postgres:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_DB: private
+      POSTGRES_PASSWORD: 12345
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - hr-bot-network
+
+networks:
+  hr-bot-network:
+    driver: bridge
+
+volumes:
+  ollama-data: {}
+  private_gpt-data: {}
+  postgres-data: {}
